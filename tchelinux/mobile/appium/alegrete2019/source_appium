@@ -1,0 +1,9 @@
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk/
+  
+ANDROID_SDK_ROOT=/home/freitas/Android/Sdk
+  
+export ANDROID_SDK_ROOT
+ 
+export ANDROID_HOME=/home/freitas/Android/Sdk
+
+export PATH=$PATH:$JAVA_HOME/bin:$ANDROID_HOME/emulator  
