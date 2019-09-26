@@ -1,0 +1,608 @@
+<pre><font color="#55FF55"><b>[freitas@Voyager</b></font><font color="#FFFFFF"><b> Alegrete2019</b></font><font color="#55FF55"><b>]$</b></font> pytest --html=report_all_API24.html test_tche_flutter.py test_tche_flutter2.py test_tche_imdb_search_API24.py test_tche_imdb_search.py test_tche_imdb_login.py 
+<b>========================================== test session starts ==========================================</b>
+platform linux -- Python 3.7.4, pytest-5.1.2, py-1.8.0, pluggy-0.12.0
+rootdir: /run/media/freitas/1D88-27FC/Alegrete2019
+plugins: html-2.0.0, metadata-1.8.0
+<b>collected 10 items                                                                                      </b>
+
+test_tche_flutter.py <font color="#00AA00">...</font><font color="#00AAAA">                                                                          [ 30%]</font>
+test_tche_flutter2.py <font color="#00AA00">.</font><font color="#AA0000">F</font><font color="#00AA00">.</font><font color="#00AAAA">                                                                         [ 60%]</font>
+test_tche_imdb_search_API24.py <font color="#00AA00">.</font><font color="#00AAAA">                                                                  [ 70%]</font>
+test_tche_imdb_search.py <font color="#AA0000">F</font><font color="#00AAAA">                                                                        [ 80%]</font>
+test_tche_imdb_login.py <font color="#00AA00">.</font><font color="#AA0000">F</font><font color="#00AAAA">                                                                        [100%]</font>
+
+=============================================== FAILURES ================================================
+<font color="#FF5555"><b>_____________________________________ SimpleAndroidTests.test_input _____________________________________</b></font>
+
+self = &lt;test_tche_flutter2.SimpleAndroidTests testMethod=test_input&gt;
+
+<b>    def test_input(self):</b>
+<b>      sleep(3)</b>
+<b>      els3 = self.driver.find_elements_by_android_uiautomator(&apos;new UiSelector().className(&quot;android.widget.Button&quot;)&apos;)</b>
+<b>      for i in range(len(els3)):</b>
+<b>        if (&apos;Limpar&apos; in els3[i].text):</b>
+<b>          els3[i].click()</b>
+<b>          break</b>
+<b>      sleep(2)</b>
+<b>      els4 = self.driver.find_elements_by_android_uiautomator(&apos;new UiSelector().className(&quot;android.widget.EditText&quot;)&apos;)</b>
+<b>      for i in range(len(els4)):</b>
+<b>        if (&apos;App&apos; in els4[i].text):</b>
+<b>          print(els4[i].text)</b>
+<b>&gt;         els4[i].send_keys(&apos;Abacaxi&apos;)</b>
+
+<font color="#FF5555"><b>test_tche_flutter2.py</b></font>:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/selenium/webdriver/remote/webelement.py</b></font>:479: in send_keys
+<b>    &apos;value&apos;: keys_to_typing(value)})</b>
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/selenium/webdriver/remote/webelement.py</b></font>:633: in _execute
+<b>    return self._parent.execute(command, params)</b>
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/selenium/webdriver/remote/webdriver.py</b></font>:321: in execute
+<b>    self.error_handler.check_response(response)</b>
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/appium/webdriver/errorhandler.py</b></font>:29: in check_response
+<b>    raise wde</b>
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/appium/webdriver/errorhandler.py</b></font>:24: in check_response
+<b>    super(MobileErrorHandler, self).check_response(response)</b>
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;appium.webdriver.errorhandler.MobileErrorHandler object at 0x7f26c4a88050&gt;
+response = {&apos;status&apos;: 400, &apos;value&apos;: &apos;{&quot;value&quot;:{&quot;error&quot;:&quot;invalid element state&quot;,&quot;message&quot;:&quot;io.appium.uiautomator2.common.exception...Error [as command] (/usr/lib/node_modules/appium/node_modules/appium-base-driver/lib/jsonwp-proxy/proxy.js:237:19)&quot;}}&apos;}
+
+<b>    def check_response(self, response):</b>
+<b>        &quot;&quot;&quot;</b>
+<b>        Checks that a JSON response from the WebDriver does not have an error.</b>
+<b>    </b>
+<b>        :Args:</b>
+<b>         - response - The JSON response from the WebDriver server as a dictionary</b>
+<b>           object.</b>
+<b>    </b>
+<b>        :Raises: If the response contains an error message.</b>
+<b>        &quot;&quot;&quot;</b>
+<b>        status = response.get(&apos;status&apos;, None)</b>
+<b>        if status is None or status == ErrorCode.SUCCESS:</b>
+<b>            return</b>
+<b>        value = None</b>
+<b>        message = response.get(&quot;message&quot;, &quot;&quot;)</b>
+<b>        screen = response.get(&quot;screen&quot;, &quot;&quot;)</b>
+<b>        stacktrace = None</b>
+<b>        if isinstance(status, int):</b>
+<b>            value_json = response.get(&apos;value&apos;, None)</b>
+<b>            if value_json and isinstance(value_json, basestring):</b>
+<b>                import json</b>
+<b>                try:</b>
+<b>                    value = json.loads(value_json)</b>
+<b>                    if len(value.keys()) == 1:</b>
+<b>                        value = value[&apos;value&apos;]</b>
+<b>                    status = value.get(&apos;error&apos;, None)</b>
+<b>                    if status is None:</b>
+<b>                        status = value[&quot;status&quot;]</b>
+<b>                        message = value[&quot;value&quot;]</b>
+<b>                        if not isinstance(message, basestring):</b>
+<b>                            value = message</b>
+<b>                            message = message.get(&apos;message&apos;)</b>
+<b>                    else:</b>
+<b>                        message = value.get(&apos;message&apos;, None)</b>
+<b>                except ValueError:</b>
+<b>                    pass</b>
+<b>    </b>
+<b>        exception_class = ErrorInResponseException</b>
+<b>        if status in ErrorCode.NO_SUCH_ELEMENT:</b>
+<b>            exception_class = NoSuchElementException</b>
+<b>        elif status in ErrorCode.NO_SUCH_FRAME:</b>
+<b>            exception_class = NoSuchFrameException</b>
+<b>        elif status in ErrorCode.NO_SUCH_WINDOW:</b>
+<b>            exception_class = NoSuchWindowException</b>
+<b>        elif status in ErrorCode.STALE_ELEMENT_REFERENCE:</b>
+<b>            exception_class = StaleElementReferenceException</b>
+<b>        elif status in ErrorCode.ELEMENT_NOT_VISIBLE:</b>
+<b>            exception_class = ElementNotVisibleException</b>
+<b>        elif status in ErrorCode.INVALID_ELEMENT_STATE:</b>
+<b>            exception_class = InvalidElementStateException</b>
+<b>        elif status in ErrorCode.INVALID_SELECTOR \</b>
+<b>                or status in ErrorCode.INVALID_XPATH_SELECTOR \</b>
+<b>                or status in ErrorCode.INVALID_XPATH_SELECTOR_RETURN_TYPER:</b>
+<b>            exception_class = InvalidSelectorException</b>
+<b>        elif status in ErrorCode.ELEMENT_IS_NOT_SELECTABLE:</b>
+<b>            exception_class = ElementNotSelectableException</b>
+<b>        elif status in ErrorCode.ELEMENT_NOT_INTERACTABLE:</b>
+<b>            exception_class = ElementNotInteractableException</b>
+<b>        elif status in ErrorCode.INVALID_COOKIE_DOMAIN:</b>
+<b>            exception_class = InvalidCookieDomainException</b>
+<b>        elif status in ErrorCode.UNABLE_TO_SET_COOKIE:</b>
+<b>            exception_class = UnableToSetCookieException</b>
+<b>        elif status in ErrorCode.TIMEOUT:</b>
+<b>            exception_class = TimeoutException</b>
+<b>        elif status in ErrorCode.SCRIPT_TIMEOUT:</b>
+<b>            exception_class = TimeoutException</b>
+<b>        elif status in ErrorCode.UNKNOWN_ERROR:</b>
+<b>            exception_class = WebDriverException</b>
+<b>        elif status in ErrorCode.UNEXPECTED_ALERT_OPEN:</b>
+<b>            exception_class = UnexpectedAlertPresentException</b>
+<b>        elif status in ErrorCode.NO_ALERT_OPEN:</b>
+<b>            exception_class = NoAlertPresentException</b>
+<b>        elif status in ErrorCode.IME_NOT_AVAILABLE:</b>
+<b>            exception_class = ImeNotAvailableException</b>
+<b>        elif status in ErrorCode.IME_ENGINE_ACTIVATION_FAILED:</b>
+<b>            exception_class = ImeActivationFailedException</b>
+<b>        elif status in ErrorCode.MOVE_TARGET_OUT_OF_BOUNDS:</b>
+<b>            exception_class = MoveTargetOutOfBoundsException</b>
+<b>        elif status in ErrorCode.JAVASCRIPT_ERROR:</b>
+<b>            exception_class = JavascriptException</b>
+<b>        elif status in ErrorCode.SESSION_NOT_CREATED:</b>
+<b>            exception_class = SessionNotCreatedException</b>
+<b>        elif status in ErrorCode.INVALID_ARGUMENT:</b>
+<b>            exception_class = InvalidArgumentException</b>
+<b>        elif status in ErrorCode.NO_SUCH_COOKIE:</b>
+<b>            exception_class = NoSuchCookieException</b>
+<b>        elif status in ErrorCode.UNABLE_TO_CAPTURE_SCREEN:</b>
+<b>            exception_class = ScreenshotException</b>
+<b>        elif status in ErrorCode.ELEMENT_CLICK_INTERCEPTED:</b>
+<b>            exception_class = ElementClickInterceptedException</b>
+<b>        elif status in ErrorCode.INSECURE_CERTIFICATE:</b>
+<b>            exception_class = InsecureCertificateException</b>
+<b>        elif status in ErrorCode.INVALID_COORDINATES:</b>
+<b>            exception_class = InvalidCoordinatesException</b>
+<b>        elif status in ErrorCode.INVALID_SESSION_ID:</b>
+<b>            exception_class = InvalidSessionIdException</b>
+<b>        elif status in ErrorCode.UNKNOWN_METHOD:</b>
+<b>            exception_class = UnknownMethodException</b>
+<b>        else:</b>
+<b>            exception_class = WebDriverException</b>
+<b>        if value == &apos;&apos; or value is None:</b>
+<b>            value = response[&apos;value&apos;]</b>
+<b>        if isinstance(value, basestring):</b>
+<b>            if exception_class == ErrorInResponseException:</b>
+<b>                raise exception_class(response, value)</b>
+<b>            raise exception_class(value)</b>
+<b>        if message == &quot;&quot; and &apos;message&apos; in value:</b>
+<b>            message = value[&apos;message&apos;]</b>
+<b>    </b>
+<b>        screen = None</b>
+<b>        if &apos;screen&apos; in value:</b>
+<b>            screen = value[&apos;screen&apos;]</b>
+<b>    </b>
+<b>        stacktrace = None</b>
+<b>        if &apos;stackTrace&apos; in value and value[&apos;stackTrace&apos;]:</b>
+<b>            stacktrace = []</b>
+<b>            try:</b>
+<b>                for frame in value[&apos;stackTrace&apos;]:</b>
+<b>                    line = self._value_or_default(frame, &apos;lineNumber&apos;, &apos;&apos;)</b>
+<b>                    file = self._value_or_default(frame, &apos;fileName&apos;, &apos;&lt;anonymous&gt;&apos;)</b>
+<b>                    if line:</b>
+<b>                        file = &quot;%s:%s&quot; % (file, line)</b>
+<b>                    meth = self._value_or_default(frame, &apos;methodName&apos;, &apos;&lt;anonymous&gt;&apos;)</b>
+<b>                    if &apos;className&apos; in frame:</b>
+<b>                        meth = &quot;%s.%s&quot; % (frame[&apos;className&apos;], meth)</b>
+<b>                    msg = &quot;    at %s (%s)&quot;</b>
+<b>                    msg = msg % (meth, file)</b>
+<b>                    stacktrace.append(msg)</b>
+<b>            except TypeError:</b>
+<b>                pass</b>
+<b>        if exception_class == ErrorInResponseException:</b>
+<b>            raise exception_class(response, message)</b>
+<b>        elif exception_class == UnexpectedAlertPresentException:</b>
+<b>            alert_text = None</b>
+<b>            if &apos;data&apos; in value:</b>
+<b>                alert_text = value[&apos;data&apos;].get(&apos;text&apos;)</b>
+<b>            elif &apos;alert&apos; in value:</b>
+<b>                alert_text = value[&apos;alert&apos;].get(&apos;text&apos;)</b>
+<b>            raise exception_class(message, screen, stacktrace, alert_text)</b>
+<b>&gt;       raise exception_class(message, screen, stacktrace)</b>
+<font color="#FF5555"><b>E       selenium.common.exceptions.InvalidElementStateException: Message: io.appium.uiautomator2.common.exceptions.InvalidElementStateException: Cannot set the element to &apos;Abacaxi&apos;. Did you interact with the correct element?</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.appium.uiautomator2.handler.SendKeysToElement.safeHandle(SendKeysToElement.java:97)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.appium.uiautomator2.handler.request.SafeRequestHandler.handle(SafeRequestHandler.java:37)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.appium.uiautomator2.server.AppiumServlet.handleRequest(AppiumServlet.java:252)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.appium.uiautomator2.server.AppiumServlet.handleHttpRequest(AppiumServlet.java:243)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.appium.uiautomator2.http.ServerHandler.channelRead(ServerHandler.java:44)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:366)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:352)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:345)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:102)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:366)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:352)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:345)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.CombinedChannelDuplexHandler$DelegatingChannelHandlerContext.fireChannelRead(CombinedChannelDuplexHandler.java:435)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:293)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:267)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.CombinedChannelDuplexHandler.channelRead(CombinedChannelDuplexHandler.java:250)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:366)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:352)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:345)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1294)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:366)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:352)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:911)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:131)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:611)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:552)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:466)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:438)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:140)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:144)</b></font>
+<font color="#FF5555"><b>E       </b></font>	<font color="#FF5555"><b>at java.lang.Thread.run(Thread.java:761)</b></font>
+
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/selenium/webdriver/remote/errorhandler.py</b></font>:242: InvalidElementStateException
+----------------------------------------- Captured stdout call ------------------------------------------
+Título do App
+<font color="#FF5555"><b>_______________________________ SimpleAndroidTests.test_search_starttrek ________________________________</b></font>
+
+self = &lt;test_tche_imdb_search.SimpleAndroidTests testMethod=test_search_starttrek&gt;
+
+<b>    def test_search_starttrek(self):</b>
+<b>      sleep(5)</b>
+<b>      self.driver.find_element_by_id(&apos;com.imdb.mobile:id/search&apos;).click()</b>
+<b>      sleep(2)</b>
+<b>      self.driver.find_element_by_id(&apos;com.imdb.mobile:id/search_src_text&apos;).send_keys(&apos;Star&apos;)</b>
+<b>      self.driver.back()</b>
+<b>      sleep(2)</b>
+<b>      self.driver.find_element_by_id(&apos;com.imdb.mobile:id/search_src_text&apos;).send_keys(&apos;star trek&apos;)</b>
+<b>      sleep(2)</b>
+<b>      els = self.driver.find_elements_by_android_uiautomator(&apos;new UiSelector().className(&quot;android.widget.TextView&quot;)&apos;)</b>
+<b>      print(&quot;ELS tam:&quot;,len(els))</b>
+<b>      for i in range(len(els)):</b>
+<b>        print(&quot;i:&quot;, i, els[i].text)</b>
+<b>        if ((els[i].text == &quot;1966-1969  |  TV Series&quot;) or (els[i].text == &quot;William Shatner, Leonard Nimoy&quot;)):</b>
+<b>          print(&quot;Shazam!!!!&quot;)</b>
+<b>          els[i].click()</b>
+<b>          break</b>
+<b>      st = self.driver.find_elements_by_android_uiautomator(&apos;new UiSelector().resourceId(&quot;com.imdb.mobile:id/fact&quot;)&apos;)</b>
+<b>      for i in range(len(st)):</b>
+<b>        print(&quot;i:&quot;, i, st[i].text)</b>
+<b>        self.assertEqual(&apos;In the 23rd Century, Captain James T. Kirk and the crew of the USS Enterprise explore the galaxy and defend the United Federation of Planets.&apos;, st[i].text)</b>
+<b>        break</b>
+<b>      sleep(5)</b>
+<b>&gt;     self.driver.find_element_by_id(&apos;com.imdb.mobile:id/star_your&apos;).click()</b>
+
+<font color="#FF5555"><b>test_tche_imdb_search.py</b></font>:59: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/selenium/webdriver/remote/webdriver.py</b></font>:360: in find_element_by_id
+<b>    return self.find_element(by=By.ID, value=id_)</b>
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/appium/webdriver/webdriver.py</b></font>:276: in find_element
+<b>    &apos;value&apos;: value})[&apos;value&apos;]</b>
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/selenium/webdriver/remote/webdriver.py</b></font>:321: in execute
+<b>    self.error_handler.check_response(response)</b>
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/appium/webdriver/errorhandler.py</b></font>:29: in check_response
+<b>    raise wde</b>
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/appium/webdriver/errorhandler.py</b></font>:24: in check_response
+<b>    super(MobileErrorHandler, self).check_response(response)</b>
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;appium.webdriver.errorhandler.MobileErrorHandler object at 0x7f26c48b6b90&gt;
+response = {&apos;status&apos;: 404, &apos;value&apos;: &apos;{&quot;value&quot;:{&quot;error&quot;:&quot;no such element&quot;,&quot;message&quot;:&quot;An element could not be located on the page u...or2Driver.findElOrEls (/usr/lib/node_modules/appium/node_modules/appium-android-driver/lib/commands/find.js:75:11)&quot;}}&apos;}
+
+<b>    def check_response(self, response):</b>
+<b>        &quot;&quot;&quot;</b>
+<b>        Checks that a JSON response from the WebDriver does not have an error.</b>
+<b>    </b>
+<b>        :Args:</b>
+<b>         - response - The JSON response from the WebDriver server as a dictionary</b>
+<b>           object.</b>
+<b>    </b>
+<b>        :Raises: If the response contains an error message.</b>
+<b>        &quot;&quot;&quot;</b>
+<b>        status = response.get(&apos;status&apos;, None)</b>
+<b>        if status is None or status == ErrorCode.SUCCESS:</b>
+<b>            return</b>
+<b>        value = None</b>
+<b>        message = response.get(&quot;message&quot;, &quot;&quot;)</b>
+<b>        screen = response.get(&quot;screen&quot;, &quot;&quot;)</b>
+<b>        stacktrace = None</b>
+<b>        if isinstance(status, int):</b>
+<b>            value_json = response.get(&apos;value&apos;, None)</b>
+<b>            if value_json and isinstance(value_json, basestring):</b>
+<b>                import json</b>
+<b>                try:</b>
+<b>                    value = json.loads(value_json)</b>
+<b>                    if len(value.keys()) == 1:</b>
+<b>                        value = value[&apos;value&apos;]</b>
+<b>                    status = value.get(&apos;error&apos;, None)</b>
+<b>                    if status is None:</b>
+<b>                        status = value[&quot;status&quot;]</b>
+<b>                        message = value[&quot;value&quot;]</b>
+<b>                        if not isinstance(message, basestring):</b>
+<b>                            value = message</b>
+<b>                            message = message.get(&apos;message&apos;)</b>
+<b>                    else:</b>
+<b>                        message = value.get(&apos;message&apos;, None)</b>
+<b>                except ValueError:</b>
+<b>                    pass</b>
+<b>    </b>
+<b>        exception_class = ErrorInResponseException</b>
+<b>        if status in ErrorCode.NO_SUCH_ELEMENT:</b>
+<b>            exception_class = NoSuchElementException</b>
+<b>        elif status in ErrorCode.NO_SUCH_FRAME:</b>
+<b>            exception_class = NoSuchFrameException</b>
+<b>        elif status in ErrorCode.NO_SUCH_WINDOW:</b>
+<b>            exception_class = NoSuchWindowException</b>
+<b>        elif status in ErrorCode.STALE_ELEMENT_REFERENCE:</b>
+<b>            exception_class = StaleElementReferenceException</b>
+<b>        elif status in ErrorCode.ELEMENT_NOT_VISIBLE:</b>
+<b>            exception_class = ElementNotVisibleException</b>
+<b>        elif status in ErrorCode.INVALID_ELEMENT_STATE:</b>
+<b>            exception_class = InvalidElementStateException</b>
+<b>        elif status in ErrorCode.INVALID_SELECTOR \</b>
+<b>                or status in ErrorCode.INVALID_XPATH_SELECTOR \</b>
+<b>                or status in ErrorCode.INVALID_XPATH_SELECTOR_RETURN_TYPER:</b>
+<b>            exception_class = InvalidSelectorException</b>
+<b>        elif status in ErrorCode.ELEMENT_IS_NOT_SELECTABLE:</b>
+<b>            exception_class = ElementNotSelectableException</b>
+<b>        elif status in ErrorCode.ELEMENT_NOT_INTERACTABLE:</b>
+<b>            exception_class = ElementNotInteractableException</b>
+<b>        elif status in ErrorCode.INVALID_COOKIE_DOMAIN:</b>
+<b>            exception_class = InvalidCookieDomainException</b>
+<b>        elif status in ErrorCode.UNABLE_TO_SET_COOKIE:</b>
+<b>            exception_class = UnableToSetCookieException</b>
+<b>        elif status in ErrorCode.TIMEOUT:</b>
+<b>            exception_class = TimeoutException</b>
+<b>        elif status in ErrorCode.SCRIPT_TIMEOUT:</b>
+<b>            exception_class = TimeoutException</b>
+<b>        elif status in ErrorCode.UNKNOWN_ERROR:</b>
+<b>            exception_class = WebDriverException</b>
+<b>        elif status in ErrorCode.UNEXPECTED_ALERT_OPEN:</b>
+<b>            exception_class = UnexpectedAlertPresentException</b>
+<b>        elif status in ErrorCode.NO_ALERT_OPEN:</b>
+<b>            exception_class = NoAlertPresentException</b>
+<b>        elif status in ErrorCode.IME_NOT_AVAILABLE:</b>
+<b>            exception_class = ImeNotAvailableException</b>
+<b>        elif status in ErrorCode.IME_ENGINE_ACTIVATION_FAILED:</b>
+<b>            exception_class = ImeActivationFailedException</b>
+<b>        elif status in ErrorCode.MOVE_TARGET_OUT_OF_BOUNDS:</b>
+<b>            exception_class = MoveTargetOutOfBoundsException</b>
+<b>        elif status in ErrorCode.JAVASCRIPT_ERROR:</b>
+<b>            exception_class = JavascriptException</b>
+<b>        elif status in ErrorCode.SESSION_NOT_CREATED:</b>
+<b>            exception_class = SessionNotCreatedException</b>
+<b>        elif status in ErrorCode.INVALID_ARGUMENT:</b>
+<b>            exception_class = InvalidArgumentException</b>
+<b>        elif status in ErrorCode.NO_SUCH_COOKIE:</b>
+<b>            exception_class = NoSuchCookieException</b>
+<b>        elif status in ErrorCode.UNABLE_TO_CAPTURE_SCREEN:</b>
+<b>            exception_class = ScreenshotException</b>
+<b>        elif status in ErrorCode.ELEMENT_CLICK_INTERCEPTED:</b>
+<b>            exception_class = ElementClickInterceptedException</b>
+<b>        elif status in ErrorCode.INSECURE_CERTIFICATE:</b>
+<b>            exception_class = InsecureCertificateException</b>
+<b>        elif status in ErrorCode.INVALID_COORDINATES:</b>
+<b>            exception_class = InvalidCoordinatesException</b>
+<b>        elif status in ErrorCode.INVALID_SESSION_ID:</b>
+<b>            exception_class = InvalidSessionIdException</b>
+<b>        elif status in ErrorCode.UNKNOWN_METHOD:</b>
+<b>            exception_class = UnknownMethodException</b>
+<b>        else:</b>
+<b>            exception_class = WebDriverException</b>
+<b>        if value == &apos;&apos; or value is None:</b>
+<b>            value = response[&apos;value&apos;]</b>
+<b>        if isinstance(value, basestring):</b>
+<b>            if exception_class == ErrorInResponseException:</b>
+<b>                raise exception_class(response, value)</b>
+<b>            raise exception_class(value)</b>
+<b>        if message == &quot;&quot; and &apos;message&apos; in value:</b>
+<b>            message = value[&apos;message&apos;]</b>
+<b>    </b>
+<b>        screen = None</b>
+<b>        if &apos;screen&apos; in value:</b>
+<b>            screen = value[&apos;screen&apos;]</b>
+<b>    </b>
+<b>        stacktrace = None</b>
+<b>        if &apos;stackTrace&apos; in value and value[&apos;stackTrace&apos;]:</b>
+<b>            stacktrace = []</b>
+<b>            try:</b>
+<b>                for frame in value[&apos;stackTrace&apos;]:</b>
+<b>                    line = self._value_or_default(frame, &apos;lineNumber&apos;, &apos;&apos;)</b>
+<b>                    file = self._value_or_default(frame, &apos;fileName&apos;, &apos;&lt;anonymous&gt;&apos;)</b>
+<b>                    if line:</b>
+<b>                        file = &quot;%s:%s&quot; % (file, line)</b>
+<b>                    meth = self._value_or_default(frame, &apos;methodName&apos;, &apos;&lt;anonymous&gt;&apos;)</b>
+<b>                    if &apos;className&apos; in frame:</b>
+<b>                        meth = &quot;%s.%s&quot; % (frame[&apos;className&apos;], meth)</b>
+<b>                    msg = &quot;    at %s (%s)&quot;</b>
+<b>                    msg = msg % (meth, file)</b>
+<b>                    stacktrace.append(msg)</b>
+<b>            except TypeError:</b>
+<b>                pass</b>
+<b>        if exception_class == ErrorInResponseException:</b>
+<b>            raise exception_class(response, message)</b>
+<b>        elif exception_class == UnexpectedAlertPresentException:</b>
+<b>            alert_text = None</b>
+<b>            if &apos;data&apos; in value:</b>
+<b>                alert_text = value[&apos;data&apos;].get(&apos;text&apos;)</b>
+<b>            elif &apos;alert&apos; in value:</b>
+<b>                alert_text = value[&apos;alert&apos;].get(&apos;text&apos;)</b>
+<b>            raise exception_class(message, screen, stacktrace, alert_text)</b>
+<b>&gt;       raise exception_class(message, screen, stacktrace)</b>
+<font color="#FF5555"><b>E       selenium.common.exceptions.NoSuchElementException: Message: An element could not be located on the page using the given search parameters.</b></font>
+
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/selenium/webdriver/remote/errorhandler.py</b></font>:242: NoSuchElementException
+----------------------------------------- Captured stdout call ------------------------------------------
+ELS tam: 8
+i: 0 
+i: 1 HOME
+i: 2 MOVIES
+i: 3 TV
+i: 4 CELEBS
+i: 5 AWARDS &amp; EVENTS
+i: 6 Midway
+i: 7 2019   Official Trailer
+<font color="#FF5555"><b>__________________________________ SimpleAndroidTests.test_login_error __________________________________</b></font>
+
+self = &lt;test_tche_imdb_login.SimpleAndroidTests testMethod=test_login_error&gt;
+
+<b>    def test_login_error(self):</b>
+<b>    </b>	<b>sleep(4)</b>
+<b>    </b>	<b>self.driver.find_element_by_id(&apos;com.imdb.mobile:id/menu_account&apos;).click()</b>
+<b>    </b>	<b>sleep(2)</b>
+<b>    </b>	<b>self.driver.find_element_by_android_uiautomator(&apos;new UiSelector().text(&quot;SIGN IN / CREATE ACCOUNT&quot;)&apos;).click()</b>
+<b>    </b>	<b>sleep(2)</b>
+<b>    </b>	<b>self.driver.find_element_by_id(&apos;com.imdb.mobile:id/imdb_auth_portal&apos;).click()</b>
+<b>    </b>	<b>sleep(10)</b>
+<b>    </b>	<b>els = self.driver.find_elements_by_android_uiautomator(&quot;new UiSelector().clickable(true)&quot;)</b>
+<b>    </b>	<b>for i in range(len(els)):</b>
+<b>    </b>	<b>#print(els[i].text)</b>
+<b>    </b>		<b>if (els[i].text == &apos;Show password&apos;):</b>
+<b>    </b>			<b>els[i].click()</b>
+<b>    </b>	<b>els2 = self.driver.find_elements_by_android_uiautomator(&apos;new UiSelector().className(&quot;android.widget.EditText&quot;)&apos;)</b>
+<b>    </b>	<b>els2[0].click()</b>
+<b>&gt;   </b>	<b>self.driver.find_element_by_id(&apos;ap_email&apos;)</b>
+
+<font color="#FF5555"><b>test_tche_imdb_login.py</b></font>:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/selenium/webdriver/remote/webdriver.py</b></font>:360: in find_element_by_id
+<b>    return self.find_element(by=By.ID, value=id_)</b>
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/appium/webdriver/webdriver.py</b></font>:276: in find_element
+<b>    &apos;value&apos;: value})[&apos;value&apos;]</b>
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/selenium/webdriver/remote/webdriver.py</b></font>:321: in execute
+<b>    self.error_handler.check_response(response)</b>
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/appium/webdriver/errorhandler.py</b></font>:29: in check_response
+<b>    raise wde</b>
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/appium/webdriver/errorhandler.py</b></font>:24: in check_response
+<b>    super(MobileErrorHandler, self).check_response(response)</b>
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;appium.webdriver.errorhandler.MobileErrorHandler object at 0x7f26c49fa650&gt;
+response = {&apos;status&apos;: 404, &apos;value&apos;: &apos;{&quot;value&quot;:{&quot;error&quot;:&quot;no such element&quot;,&quot;message&quot;:&quot;An element could not be located on the page u...or2Driver.findElOrEls (/usr/lib/node_modules/appium/node_modules/appium-android-driver/lib/commands/find.js:75:11)&quot;}}&apos;}
+
+<b>    def check_response(self, response):</b>
+<b>        &quot;&quot;&quot;</b>
+<b>        Checks that a JSON response from the WebDriver does not have an error.</b>
+<b>    </b>
+<b>        :Args:</b>
+<b>         - response - The JSON response from the WebDriver server as a dictionary</b>
+<b>           object.</b>
+<b>    </b>
+<b>        :Raises: If the response contains an error message.</b>
+<b>        &quot;&quot;&quot;</b>
+<b>        status = response.get(&apos;status&apos;, None)</b>
+<b>        if status is None or status == ErrorCode.SUCCESS:</b>
+<b>            return</b>
+<b>        value = None</b>
+<b>        message = response.get(&quot;message&quot;, &quot;&quot;)</b>
+<b>        screen = response.get(&quot;screen&quot;, &quot;&quot;)</b>
+<b>        stacktrace = None</b>
+<b>        if isinstance(status, int):</b>
+<b>            value_json = response.get(&apos;value&apos;, None)</b>
+<b>            if value_json and isinstance(value_json, basestring):</b>
+<b>                import json</b>
+<b>                try:</b>
+<b>                    value = json.loads(value_json)</b>
+<b>                    if len(value.keys()) == 1:</b>
+<b>                        value = value[&apos;value&apos;]</b>
+<b>                    status = value.get(&apos;error&apos;, None)</b>
+<b>                    if status is None:</b>
+<b>                        status = value[&quot;status&quot;]</b>
+<b>                        message = value[&quot;value&quot;]</b>
+<b>                        if not isinstance(message, basestring):</b>
+<b>                            value = message</b>
+<b>                            message = message.get(&apos;message&apos;)</b>
+<b>                    else:</b>
+<b>                        message = value.get(&apos;message&apos;, None)</b>
+<b>                except ValueError:</b>
+<b>                    pass</b>
+<b>    </b>
+<b>        exception_class = ErrorInResponseException</b>
+<b>        if status in ErrorCode.NO_SUCH_ELEMENT:</b>
+<b>            exception_class = NoSuchElementException</b>
+<b>        elif status in ErrorCode.NO_SUCH_FRAME:</b>
+<b>            exception_class = NoSuchFrameException</b>
+<b>        elif status in ErrorCode.NO_SUCH_WINDOW:</b>
+<b>            exception_class = NoSuchWindowException</b>
+<b>        elif status in ErrorCode.STALE_ELEMENT_REFERENCE:</b>
+<b>            exception_class = StaleElementReferenceException</b>
+<b>        elif status in ErrorCode.ELEMENT_NOT_VISIBLE:</b>
+<b>            exception_class = ElementNotVisibleException</b>
+<b>        elif status in ErrorCode.INVALID_ELEMENT_STATE:</b>
+<b>            exception_class = InvalidElementStateException</b>
+<b>        elif status in ErrorCode.INVALID_SELECTOR \</b>
+<b>                or status in ErrorCode.INVALID_XPATH_SELECTOR \</b>
+<b>                or status in ErrorCode.INVALID_XPATH_SELECTOR_RETURN_TYPER:</b>
+<b>            exception_class = InvalidSelectorException</b>
+<b>        elif status in ErrorCode.ELEMENT_IS_NOT_SELECTABLE:</b>
+<b>            exception_class = ElementNotSelectableException</b>
+<b>        elif status in ErrorCode.ELEMENT_NOT_INTERACTABLE:</b>
+<b>            exception_class = ElementNotInteractableException</b>
+<b>        elif status in ErrorCode.INVALID_COOKIE_DOMAIN:</b>
+<b>            exception_class = InvalidCookieDomainException</b>
+<b>        elif status in ErrorCode.UNABLE_TO_SET_COOKIE:</b>
+<b>            exception_class = UnableToSetCookieException</b>
+<b>        elif status in ErrorCode.TIMEOUT:</b>
+<b>            exception_class = TimeoutException</b>
+<b>        elif status in ErrorCode.SCRIPT_TIMEOUT:</b>
+<b>            exception_class = TimeoutException</b>
+<b>        elif status in ErrorCode.UNKNOWN_ERROR:</b>
+<b>            exception_class = WebDriverException</b>
+<b>        elif status in ErrorCode.UNEXPECTED_ALERT_OPEN:</b>
+<b>            exception_class = UnexpectedAlertPresentException</b>
+<b>        elif status in ErrorCode.NO_ALERT_OPEN:</b>
+<b>            exception_class = NoAlertPresentException</b>
+<b>        elif status in ErrorCode.IME_NOT_AVAILABLE:</b>
+<b>            exception_class = ImeNotAvailableException</b>
+<b>        elif status in ErrorCode.IME_ENGINE_ACTIVATION_FAILED:</b>
+<b>            exception_class = ImeActivationFailedException</b>
+<b>        elif status in ErrorCode.MOVE_TARGET_OUT_OF_BOUNDS:</b>
+<b>            exception_class = MoveTargetOutOfBoundsException</b>
+<b>        elif status in ErrorCode.JAVASCRIPT_ERROR:</b>
+<b>            exception_class = JavascriptException</b>
+<b>        elif status in ErrorCode.SESSION_NOT_CREATED:</b>
+<b>            exception_class = SessionNotCreatedException</b>
+<b>        elif status in ErrorCode.INVALID_ARGUMENT:</b>
+<b>            exception_class = InvalidArgumentException</b>
+<b>        elif status in ErrorCode.NO_SUCH_COOKIE:</b>
+<b>            exception_class = NoSuchCookieException</b>
+<b>        elif status in ErrorCode.UNABLE_TO_CAPTURE_SCREEN:</b>
+<b>            exception_class = ScreenshotException</b>
+<b>        elif status in ErrorCode.ELEMENT_CLICK_INTERCEPTED:</b>
+<b>            exception_class = ElementClickInterceptedException</b>
+<b>        elif status in ErrorCode.INSECURE_CERTIFICATE:</b>
+<b>            exception_class = InsecureCertificateException</b>
+<b>        elif status in ErrorCode.INVALID_COORDINATES:</b>
+<b>            exception_class = InvalidCoordinatesException</b>
+<b>        elif status in ErrorCode.INVALID_SESSION_ID:</b>
+<b>            exception_class = InvalidSessionIdException</b>
+<b>        elif status in ErrorCode.UNKNOWN_METHOD:</b>
+<b>            exception_class = UnknownMethodException</b>
+<b>        else:</b>
+<b>            exception_class = WebDriverException</b>
+<b>        if value == &apos;&apos; or value is None:</b>
+<b>            value = response[&apos;value&apos;]</b>
+<b>        if isinstance(value, basestring):</b>
+<b>            if exception_class == ErrorInResponseException:</b>
+<b>                raise exception_class(response, value)</b>
+<b>            raise exception_class(value)</b>
+<b>        if message == &quot;&quot; and &apos;message&apos; in value:</b>
+<b>            message = value[&apos;message&apos;]</b>
+<b>    </b>
+<b>        screen = None</b>
+<b>        if &apos;screen&apos; in value:</b>
+<b>            screen = value[&apos;screen&apos;]</b>
+<b>    </b>
+<b>        stacktrace = None</b>
+<b>        if &apos;stackTrace&apos; in value and value[&apos;stackTrace&apos;]:</b>
+<b>            stacktrace = []</b>
+<b>            try:</b>
+<b>                for frame in value[&apos;stackTrace&apos;]:</b>
+<b>                    line = self._value_or_default(frame, &apos;lineNumber&apos;, &apos;&apos;)</b>
+<b>                    file = self._value_or_default(frame, &apos;fileName&apos;, &apos;&lt;anonymous&gt;&apos;)</b>
+<b>                    if line:</b>
+<b>                        file = &quot;%s:%s&quot; % (file, line)</b>
+<b>                    meth = self._value_or_default(frame, &apos;methodName&apos;, &apos;&lt;anonymous&gt;&apos;)</b>
+<b>                    if &apos;className&apos; in frame:</b>
+<b>                        meth = &quot;%s.%s&quot; % (frame[&apos;className&apos;], meth)</b>
+<b>                    msg = &quot;    at %s (%s)&quot;</b>
+<b>                    msg = msg % (meth, file)</b>
+<b>                    stacktrace.append(msg)</b>
+<b>            except TypeError:</b>
+<b>                pass</b>
+<b>        if exception_class == ErrorInResponseException:</b>
+<b>            raise exception_class(response, message)</b>
+<b>        elif exception_class == UnexpectedAlertPresentException:</b>
+<b>            alert_text = None</b>
+<b>            if &apos;data&apos; in value:</b>
+<b>                alert_text = value[&apos;data&apos;].get(&apos;text&apos;)</b>
+<b>            elif &apos;alert&apos; in value:</b>
+<b>                alert_text = value[&apos;alert&apos;].get(&apos;text&apos;)</b>
+<b>            raise exception_class(message, screen, stacktrace, alert_text)</b>
+<b>&gt;       raise exception_class(message, screen, stacktrace)</b>
+<font color="#FF5555"><b>E       selenium.common.exceptions.NoSuchElementException: Message: An element could not be located on the page using the given search parameters.</b></font>
+
+<font color="#FF5555"><b>/usr/lib/python3.7/site-packages/selenium/webdriver/remote/errorhandler.py</b></font>:242: NoSuchElementException
+------ generated html file: file:///run/media/freitas/1D88-27FC/Alegrete2019/report_all_API24.html ------
+<font color="#FF5555"><b>================================ 3 failed, 7 passed in 215.39s (0:03:35) ================================</b></font>
+</pre>

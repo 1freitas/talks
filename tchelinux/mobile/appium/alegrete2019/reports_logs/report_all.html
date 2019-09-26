@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Test Report</title>
+    <link href="assets/style.css" rel="stylesheet" type="text/css"/></head>
+  <body onLoad="init()">
+    <script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function find_all(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sort_column(elem) {
+    toggle_sort_states(elem);
+    var colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    var key;
+    if (elem.classList.contains('numeric')) {
+        key = key_num;
+    } else if (elem.classList.contains('result')) {
+        key = key_result;
+    } else {
+        key = key_alpha;
+    }
+    sort_table(elem, key(colIndex));
+}
+
+function show_all_extras() {
+    find_all('.col-result').forEach(show_extras);
+}
+
+function hide_all_extras() {
+    find_all('.col-result').forEach(hide_extras);
+}
+
+function show_extras(colresult_elem) {
+    var extras = colresult_elem.parentNode.nextElementSibling;
+    var expandcollapse = colresult_elem.firstElementChild;
+    extras.classList.remove("collapsed");
+    expandcollapse.classList.remove("expander");
+    expandcollapse.classList.add("collapser");
+}
+
+function hide_extras(colresult_elem) {
+    var extras = colresult_elem.parentNode.nextElementSibling;
+    var expandcollapse = colresult_elem.firstElementChild;
+    extras.classList.add("collapsed");
+    expandcollapse.classList.remove("collapser");
+    expandcollapse.classList.add("expander");
+}
+
+function show_filters() {
+    var filter_items = document.getElementsByClassName('filter');
+    for (var i = 0; i < filter_items.length; i++)
+        filter_items[i].hidden = false;
+}
+
+function add_collapse() {
+    // Add links for show/hide all
+    var resulttable = find('table#results-table');
+    var showhideall = document.createElement("p");
+    showhideall.innerHTML = '<a href="javascript:show_all_extras()">Show all details</a> / ' +
+                            '<a href="javascript:hide_all_extras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    find_all('.col-result').forEach(function(elem) {
+        var collapsed = get_query_parameter('collapsed') || 'Passed';
+        var extras = elem.parentNode.nextElementSibling;
+        var expandcollapse = document.createElement("span");
+        if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add("collapsed");
+            expandcollapse.classList.add("expander");
+        } else {
+            expandcollapse.classList.add("collapser");
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener("click", function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains("collapsed")) {
+                show_extras(event.currentTarget);
+            } else {
+                hide_extras(event.currentTarget);
+            }
+        });
+    })
+}
+
+function get_query_parameter(name) {
+    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () {
+    reset_sort_headers();
+
+    add_collapse();
+
+    show_filters();
+
+    toggle_sort_states(find('.initial-sort'));
+
+    find_all('.sortable').forEach(function(elem) {
+        elem.addEventListener("click",
+                              function(event) {
+                                  sort_column(elem);
+                              }, false)
+    });
+
+};
+
+function sort_table(clicked, key_func) {
+    var rows = find_all('.results-table-row');
+    var reversed = !clicked.classList.contains('asc');
+    var sorted_rows = sort(rows, key_func, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    var thead = document.getElementById("results-table-head");
+    document.getElementById('results-table').remove();
+    var parent = document.createElement("table");
+    parent.id = "results-table";
+    parent.appendChild(thead);
+    sorted_rows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName("BODY")[0].appendChild(parent);
+}
+
+function sort(items, key_func, reversed) {
+    var sort_array = items.map(function(item, i) {
+        return [key_func(item), i];
+    });
+    var multiplier = reversed ? -1 : 1;
+
+    sort_array.sort(function(a, b) {
+        var key_a = a[0];
+        var key_b = b[0];
+        return multiplier * (key_a >= key_b ? 1 : -1);
+    });
+
+    return sort_array.map(function(item) {
+        var index = item[1];
+        return items[index];
+    });
+}
+
+function key_alpha(col_index) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[col_index].firstChild.data.toLowerCase();
+    };
+}
+
+function key_num(col_index) {
+    return function(elem) {
+        return parseFloat(elem.childNodes[1].childNodes[col_index].firstChild.data);
+    };
+}
+
+function key_result(col_index) {
+    return function(elem) {
+        var strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+                       'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[col_index].firstChild.data);
+    };
+}
+
+function reset_sort_headers() {
+    find_all('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    find_all('.sortable').forEach(function(elem) {
+        var icon = document.createElement("div");
+        icon.className = "sort-icon";
+        icon.textContent = "vvv";
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove("desc", "active");
+        elem.classList.add("asc", "inactive");
+    });
+}
+
+function toggle_sort_states(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        reset_sort_headers();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function is_all_rows_hidden(value) {
+  return value.hidden == false;
+}
+
+function filter_table(elem) {
+    var outcome_att = "data-test-result";
+    var outcome = elem.getAttribute(outcome_att);
+    class_outcome = outcome + " results-table-row";
+    var outcome_rows = document.getElementsByClassName(class_outcome);
+
+    for(var i = 0; i < outcome_rows.length; i++){
+        outcome_rows[i].hidden = !elem.checked;
+    }
+
+    var rows = find_all('.results-table-row').filter(is_all_rows_hidden);
+    var all_rows_hidden = rows.length == 0 ? true : false;
+    var not_found_message = document.getElementById("not-found-message");
+    not_found_message.hidden = !all_rows_hidden;
+}
+</script>
+    <h1>report_all.html</h1>
+    <p>Report generated on 13-Sep-2019 at 17:39:59 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v1.22.0</p>
+    <h2>Environment</h2>
+    <table id="environment">
+      <tr>
+        <td>JAVA_HOME</td>
+        <td>/usr/lib/jvm/java-1.8.0-openjdk-amd64</td></tr>
+      <tr>
+        <td>Packages</td>
+        <td>{&apos;py&apos;: &apos;1.8.0&apos;, &apos;pytest&apos;: &apos;4.6.5&apos;, &apos;pluggy&apos;: &apos;0.13.0&apos;}</td></tr>
+      <tr>
+        <td>Platform</td>
+        <td>Linux-4.15.0-20-generic-x86_64-with-LinuxMint-19.1-tessa</td></tr>
+      <tr>
+        <td>Plugins</td>
+        <td>{u&apos;html&apos;: u&apos;1.22.0&apos;, u&apos;metadata&apos;: u&apos;1.8.0&apos;}</td></tr>
+      <tr>
+        <td>Python</td>
+        <td>2.7.15+</td></tr></table>
+    <h2>Summary</h2>
+    <p>8 tests ran in 111.52 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="passed">5 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="failed">3 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
+    <h2>Results</h2>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable result initial-sort" col="result">Result</th>
+          <th class="sortable" col="name">Test</th>
+          <th class="sortable numeric" col="duration">Duration</th>
+          <th>Links</th></tr>
+        <tr hidden="true" id="not-found-message">
+          <th colspan="4">No results found. Try to check the filters</th></tr></thead>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_tche_flutter2.py::SimpleAndroidTests::test_input</td>
+          <td class="col-duration">12.97</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;test_tche_flutter2.SimpleAndroidTests testMethod=test_input&gt;<br/><br/>      def test_input(self):<br/>    	sleep(3)<br/>    	els3 = self.driver.find_elements_by_android_uiautomator('new UiSelector().className("android.widget.Button")')<br/>    	for i in range(len(els3)):<br/>    		if ('Limpar' in els3[i].text):<br/>    			els3[i].click()<br/>    			break<br/>    	sleep(2)<br/>    	self.driver.start_recording_screen()<br/>    	els4 = self.driver.find_elements_by_android_uiautomator('new UiSelector().className("android.widget.EditText")')<br/>    	for i in range(len(els4)):<br/>    		if ('App' in els4[i].text):<br/>    			print(els4[i].text)<br/>&gt;   			els4[i].send_keys('Abacaxi')<br/><br/>test_tche_flutter2.py:72: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>/home/syntesis/.local/lib/python2.7/site-packages/selenium/webdriver/remote/webelement.py:479: in send_keys<br/>    'value': keys_to_typing(value)})<br/>/home/syntesis/.local/lib/python2.7/site-packages/selenium/webdriver/remote/webelement.py:633: in _execute<br/>    return self._parent.execute(command, params)<br/>/home/syntesis/.local/lib/python2.7/site-packages/selenium/webdriver/remote/webdriver.py:321: in execute<br/>    self.error_handler.check_response(response)<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;appium.webdriver.errorhandler.MobileErrorHandler object at 0x7fd28f97e9d0&gt;<br/>response = {'status': 400, 'value': '{"value":{"error":"invalid element state","message":"io.appium.uiautomator2.common.exception...ocal/lib/node_modules/appium/node_modules/appium-base-driver/lib/jsonwp-proxy/proxy.js:237:19)\n    at &lt;anonymous&gt;"}}'}<br/><br/>    def check_response(self, response):<br/>        try:<br/>            super(MobileErrorHandler, self).check_response(response)<br/>        except WebDriverException as wde:<br/>            if wde.msg == 'No such context found.':<br/>                raise NoSuchContextException(wde.msg, wde.screen, wde.stacktrace)<br/>            else:<br/>&gt;               raise wde<br/><span class="error">E               InvalidElementStateException: Message: io.appium.uiautomator2.common.exceptions.InvalidElementStateException: Cannot set the element to 'Abacaxi'. Did you interact with the correct element?</span><br/><span class="error">E               	at io.appium.uiautomator2.handler.SendKeysToElement.safeHandle(SendKeysToElement.java:97)</span><br/><span class="error">E               	at io.appium.uiautomator2.handler.request.SafeRequestHandler.handle(SafeRequestHandler.java:37)</span><br/><span class="error">E               	at io.appium.uiautomator2.server.AppiumServlet.handleRequest(AppiumServlet.java:252)</span><br/><span class="error">E               	at io.appium.uiautomator2.server.AppiumServlet.handleHttpRequest(AppiumServlet.java:243)</span><br/><span class="error">E               	at io.appium.uiautomator2.http.ServerHandler.channelRead(ServerHandler.java:44)</span><br/><span class="error">E               	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:366)</span><br/><span class="error">E               	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:352)</span><br/><span class="error">E               	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:345)</span><br/><span class="error">E               	at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:102)</span><br/><span class="error">E               	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:366)</span><br/><span class="error">E               	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:352)</span><br/><span class="error">E               	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:345)</span><br/><span class="error">E               	at io.netty.channel.CombinedChannelDuplexHandler$DelegatingChannelHandlerContext.fireChannelRead(CombinedChannelDuplexHandler.java:435)</span><br/><span class="error">E               	at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:293)</span><br/><span class="error">E               	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:267)</span><br/><span class="error">E               	at io.netty.channel.CombinedChannelDuplexHandler.channelRead(CombinedChannelDuplexHandler.java:250)</span><br/><span class="error">E               	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:366)</span><br/><span class="error">E               	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:352)</span><br/><span class="error">E               	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:345)</span><br/><span class="error">E               	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1294)</span><br/><span class="error">E               	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:366)</span><br/><span class="error">E               	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:352)</span><br/><span class="error">E               	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:911)</span><br/><span class="error">E               	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:131)</span><br/><span class="error">E               	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:611)</span><br/><span class="error">E               	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:552)</span><br/><span class="error">E               	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:466)</span><br/><span class="error">E               	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:438)</span><br/><span class="error">E               	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:140)</span><br/><span class="error">E               	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:144)</span><br/><span class="error">E               	at java.lang.Thread.run(Thread.java:764)</span><br/><br/>/home/syntesis/.local/lib/python2.7/site-packages/appium/webdriver/errorhandler.py:29: InvalidElementStateException<br/>----------------------------- Captured stdout call -----------------------------<br/>Título do App
+<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_tche_imdb_login.py::SimpleAndroidTests::test_login_fail</td>
+          <td class="col-duration">12.51</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;test_tche_imdb_login.SimpleAndroidTests testMethod=test_login_fail&gt;<br/><br/>      def test_login_fail(self):<br/>    	# login fail<br/>    	sleep(4)<br/>&gt;   	self.driver.find_element_by_id('com.imdb.mobile:id/menu_account').click()<br/><br/>test_tche_imdb_login.py:46: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>/home/syntesis/.local/lib/python2.7/site-packages/selenium/webdriver/remote/webdriver.py:360: in find_element_by_id<br/>    return self.find_element(by=By.ID, value=id_)<br/>/home/syntesis/.local/lib/python2.7/site-packages/appium/webdriver/webdriver.py:276: in find_element<br/>    'value': value})['value']<br/>/home/syntesis/.local/lib/python2.7/site-packages/selenium/webdriver/remote/webdriver.py:321: in execute<br/>    self.error_handler.check_response(response)<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;appium.webdriver.errorhandler.MobileErrorHandler object at 0x7fd28f945150&gt;<br/>response = {'status': 404, 'value': '{"value":{"error":"no such element","message":"An element could not be located on the page u...r/local/lib/node_modules/appium/node_modules/appium-android-driver/lib/commands/find.js:75:11)\n    at &lt;anonymous&gt;"}}'}<br/><br/>    def check_response(self, response):<br/>        try:<br/>            super(MobileErrorHandler, self).check_response(response)<br/>        except WebDriverException as wde:<br/>            if wde.msg == 'No such context found.':<br/>                raise NoSuchContextException(wde.msg, wde.screen, wde.stacktrace)<br/>            else:<br/>&gt;               raise wde<br/><span class="error">E               NoSuchElementException: Message: An element could not be located on the page using the given search parameters.</span><br/><br/>/home/syntesis/.local/lib/python2.7/site-packages/appium/webdriver/errorhandler.py:29: NoSuchElementException<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_tche_imdb_search.py::SimpleAndroidTests::test_search_starttrek</td>
+          <td class="col-duration">9.96</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;test_tche_imdb_search.SimpleAndroidTests testMethod=test_search_starttrek&gt;<br/><br/>    def test_search_starttrek(self):<br/>    	sleep(4)<br/>&gt;   	self.driver.find_element_by_id('com.imdb.mobile:id/self_implemented_search').click()<br/><br/>test_tche_imdb_search.py:37: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>/home/syntesis/.local/lib/python2.7/site-packages/selenium/webdriver/remote/webdriver.py:360: in find_element_by_id<br/>    return self.find_element(by=By.ID, value=id_)<br/>/home/syntesis/.local/lib/python2.7/site-packages/appium/webdriver/webdriver.py:276: in find_element<br/>    'value': value})['value']<br/>/home/syntesis/.local/lib/python2.7/site-packages/selenium/webdriver/remote/webdriver.py:321: in execute<br/>    self.error_handler.check_response(response)<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;appium.webdriver.errorhandler.MobileErrorHandler object at 0x7fd28fbc3a50&gt;<br/>response = {'status': 404, 'value': '{"value":{"error":"no such element","message":"An element could not be located on the page u...r/local/lib/node_modules/appium/node_modules/appium-android-driver/lib/commands/find.js:75:11)\n    at &lt;anonymous&gt;"}}'}<br/><br/>    def check_response(self, response):<br/>        try:<br/>            super(MobileErrorHandler, self).check_response(response)<br/>        except WebDriverException as wde:<br/>            if wde.msg == 'No such context found.':<br/>                raise NoSuchContextException(wde.msg, wde.screen, wde.stacktrace)<br/>            else:<br/>&gt;               raise wde<br/><span class="error">E               NoSuchElementException: Message: An element could not be located on the page using the given search parameters.</span><br/><br/>/home/syntesis/.local/lib/python2.7/site-packages/appium/webdriver/errorhandler.py:29: NoSuchElementException<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_tche_flutter.py::SimpleAndroidTests::test_finds</td>
+          <td class="col-duration">6.53</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">----------------------------- Captured stdout call -----------------------------<br/>('ELS ENABLED', 0, u'')
+('ELS ENABLED', 1, u'')
+('ELS ENABLED', 2, u'')
+('ELS ENABLED', 3, u'')
+('ELS ENABLED', 4, u'')
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_tche_flutter.py::SimpleAndroidTests::test_input</td>
+          <td class="col-duration">28.28</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">----------------------------- Captured stdout call -----------------------------<br/>Título do App
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_tche_flutter.py::SimpleAndroidTests::test_keyboard</td>
+          <td class="col-duration">19.20</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">----------------------------- Captured stdout call -----------------------------<br/>('TEXTO', &lt;bound method WebElement.is_enabled of &lt;appium.webdriver.webelement.WebElement (session="07bc3c71-ea0c-4d9e-8de0-4b6323d8e8ec", element="7bbaf478-7730-44cb-afa2-fe40105690ee")&gt;&gt;)
+App Teste Flutter, Título do App
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_tche_flutter2.py::SimpleAndroidTests::test_finds</td>
+          <td class="col-duration">6.45</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">----------------------------- Captured stdout call -----------------------------<br/>('ELS ENABLED', 0, u'')
+('ELS ENABLED', 1, u'')
+('ELS ENABLED', 2, u'')
+('ELS ENABLED', 3, u'')
+('ELS ENABLED', 4, u'')
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_tche_flutter2.py::SimpleAndroidTests::test_keyboard</td>
+          <td class="col-duration">15.10</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">----------------------------- Captured stdout call -----------------------------<br/>('TEXTO', &lt;bound method WebElement.is_enabled of &lt;appium.webdriver.webelement.WebElement (session="b1b5693d-ad0b-45f4-bde6-58e2c6309ee7", element="68947577-778d-4600-9810-cbf07e1a1be8")&gt;&gt;)
+<br/></div></td></tr></tbody></table></body></html>

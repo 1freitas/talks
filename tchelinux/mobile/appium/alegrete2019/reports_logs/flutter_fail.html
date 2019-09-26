@@ -1,0 +1,127 @@
+<pre> pytest  test_tche_flutter2.py 
+<b>======================================== test session starts =========================================</b>
+platform linux2 -- Python 2.7.15+, pytest-4.6.5, py-1.8.0, pluggy-0.12.0
+rootdir: /media/syntesis/1D88-27FC/Alegrete2019
+<b>collected 3 items                                                                                    </b>
+
+test_tche_flutter2.py <font color="#4E9A06">.</font><font color="#CC0000">FF</font><font color="#06989A">                                                                      [100%]</font>
+
+============================================== FAILURES ==============================================
+<font color="#EF2929"><b>___________________________________ SimpleAndroidTests.test_input ____________________________________</b></font>
+
+self = &lt;test_tche_flutter2.SimpleAndroidTests testMethod=test_input&gt;
+
+<b>      def test_input(self):</b>
+<b>    </b>	<b>sleep(3)</b>
+<b>    </b>	<b>els3 = self.driver.find_elements_by_android_uiautomator(&apos;new UiSelector().className(&quot;android.widget.Button&quot;)&apos;)</b>
+<b>    </b>	<b>for i in range(len(els3)):</b>
+<b>    </b>		<b>if (&apos;Limpar&apos; in els3[i].text):</b>
+<b>    </b>			<b>els3[i].click()</b>
+<b>    </b>			<b>break</b>
+<b>    </b>	<b>sleep(2)</b>
+<b>    </b>	<b>self.driver.start_recording_screen()</b>
+<b>    </b>	<b>els4 = self.driver.find_elements_by_android_uiautomator(&apos;new UiSelector().className(&quot;android.widget.EditText&quot;)&apos;)</b>
+<b>    </b>	<b>for i in range(len(els4)):</b>
+<b>    </b>		<b>if (&apos;App&apos; in els4[i].text):</b>
+<b>    </b>			<b>print(els4[i].text)</b>
+<b>&gt;   </b>			<b>els4[i].send_keys(&apos;Abacaxi&apos;)</b>
+
+<font color="#EF2929"><b>test_tche_flutter2.py</b></font>:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+<font color="#EF2929"><b>/home/syntesis/.local/lib/python2.7/site-packages/selenium/webdriver/remote/webelement.py</b></font>:479: in send_keys
+<b>    &apos;value&apos;: keys_to_typing(value)})</b>
+<font color="#EF2929"><b>/home/syntesis/.local/lib/python2.7/site-packages/selenium/webdriver/remote/webelement.py</b></font>:633: in _execute
+<b>    return self._parent.execute(command, params)</b>
+<font color="#EF2929"><b>/home/syntesis/.local/lib/python2.7/site-packages/selenium/webdriver/remote/webdriver.py</b></font>:321: in execute
+<b>    self.error_handler.check_response(response)</b>
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;appium.webdriver.errorhandler.MobileErrorHandler object at 0x7f7fa36efa10&gt;
+response = {&apos;status&apos;: 400, &apos;value&apos;: &apos;{&quot;value&quot;:{&quot;error&quot;:&quot;invalid element state&quot;,&quot;message&quot;:&quot;io.appium.uiautomator2.common.exception...ocal/lib/node_modules/appium/node_modules/appium-base-driver/lib/jsonwp-proxy/proxy.js:237:19)\n    at &lt;anonymous&gt;&quot;}}&apos;}
+
+<b>    def check_response(self, response):</b>
+<b>        try:</b>
+<b>            super(MobileErrorHandler, self).check_response(response)</b>
+<b>        except WebDriverException as wde:</b>
+<b>            if wde.msg == &apos;No such context found.&apos;:</b>
+<b>                raise NoSuchContextException(wde.msg, wde.screen, wde.stacktrace)</b>
+<b>            else:</b>
+<b>&gt;               raise wde</b>
+<font color="#EF2929"><b>E               InvalidElementStateException: Message: io.appium.uiautomator2.common.exceptions.InvalidElementStateException: Cannot set the element to &apos;Abacaxi&apos;. Did you interact with the correct element?</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.appium.uiautomator2.handler.SendKeysToElement.safeHandle(SendKeysToElement.java:97)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.appium.uiautomator2.handler.request.SafeRequestHandler.handle(SafeRequestHandler.java:37)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.appium.uiautomator2.server.AppiumServlet.handleRequest(AppiumServlet.java:252)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.appium.uiautomator2.server.AppiumServlet.handleHttpRequest(AppiumServlet.java:243)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.appium.uiautomator2.http.ServerHandler.channelRead(ServerHandler.java:44)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:366)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:352)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:345)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.handler.codec.MessageToMessageDecoder.channelRead(MessageToMessageDecoder.java:102)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:366)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:352)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:345)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.CombinedChannelDuplexHandler$DelegatingChannelHandlerContext.fireChannelRead(CombinedChannelDuplexHandler.java:435)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.handler.codec.ByteToMessageDecoder.fireChannelRead(ByteToMessageDecoder.java:293)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:267)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.CombinedChannelDuplexHandler.channelRead(CombinedChannelDuplexHandler.java:250)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:366)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:352)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:345)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1294)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:366)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:352)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:911)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:131)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:611)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:552)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:466)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:438)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:140)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:144)</b></font>
+<font color="#EF2929"><b>E               </b></font>	<font color="#EF2929"><b>at java.lang.Thread.run(Thread.java:764)</b></font>
+
+<font color="#EF2929"><b>/home/syntesis/.local/lib/python2.7/site-packages/appium/webdriver/errorhandler.py</b></font>:29: InvalidElementStateException
+---------------------------------------- Captured stdout call ----------------------------------------
+Título do App
+<font color="#EF2929"><b>__________________________________ SimpleAndroidTests.test_keyboard __________________________________</b></font>
+
+self = &lt;test_tche_flutter2.SimpleAndroidTests testMethod=test_keyboard&gt;
+
+<b>      def test_keyboard(self):</b>
+<b>    </b>	<b>sleep(3)</b>
+<b>    </b>	<b># inserir texto</b>
+<b>    </b>	<b>texto = self.driver.find_elements_by_class_name(&apos;android.widget.EditText&apos;)</b>
+<b>    </b>	<b>print(&quot;TEXTO&quot;, texto[0].is_enabled)</b>
+<b>    </b>	<b>texto[0].click()</b>
+<b>    </b>	<b>els4 = self.driver.find_elements_by_android_uiautomator(&apos;new UiSelector().className(&quot;android.widget.Button&quot;)&apos;)</b>
+<b>    </b>	<b>for i in range(len(els4)):</b>
+<b>    </b>		<b>if (&apos;Aplicar&apos; in els4[i].text):</b>
+<b>&gt;   </b>			<b>els4[i].click()</b>
+
+<font color="#EF2929"><b>test_tche_flutter2.py</b></font>:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+<font color="#EF2929"><b>/home/syntesis/.local/lib/python2.7/site-packages/selenium/webdriver/remote/webelement.py</b></font>:80: in click
+<b>    self._execute(Command.CLICK_ELEMENT)</b>
+<font color="#EF2929"><b>/home/syntesis/.local/lib/python2.7/site-packages/selenium/webdriver/remote/webelement.py</b></font>:633: in _execute
+<b>    return self._parent.execute(command, params)</b>
+<font color="#EF2929"><b>/home/syntesis/.local/lib/python2.7/site-packages/selenium/webdriver/remote/webdriver.py</b></font>:321: in execute
+<b>    self.error_handler.check_response(response)</b>
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;appium.webdriver.errorhandler.MobileErrorHandler object at 0x7f7fa34ae4d0&gt;
+response = {&apos;status&apos;: 500, &apos;value&apos;: &apos;{&quot;value&quot;:{&quot;error&quot;:&quot;unknown error&quot;,&quot;message&quot;:&quot;An unknown server-side error occurred while pro...ocal/lib/node_modules/appium/node_modules/appium-base-driver/lib/jsonwp-proxy/proxy.js:239:13)\n    at &lt;anonymous&gt;&quot;}}&apos;}
+
+<b>    def check_response(self, response):</b>
+<b>        try:</b>
+<b>            super(MobileErrorHandler, self).check_response(response)</b>
+<b>        except WebDriverException as wde:</b>
+<b>            if wde.msg == &apos;No such context found.&apos;:</b>
+<b>                raise NoSuchContextException(wde.msg, wde.screen, wde.stacktrace)</b>
+<b>            else:</b>
+<b>&gt;               raise wde</b>
+<font color="#EF2929"><b>E               WebDriverException: Message: An unknown server-side error occurred while processing the command. Original error: Could not proxy command to remote server. Original error: Error: socket hang up</b></font>
+
+<font color="#EF2929"><b>/home/syntesis/.local/lib/python2.7/site-packages/appium/webdriver/errorhandler.py</b></font>:29: WebDriverException
+---------------------------------------- Captured stdout call ----------------------------------------
+(&apos;TEXTO&apos;, &lt;bound method WebElement.is_enabled of &lt;appium.webdriver.webelement.WebElement (session=&quot;eff5c234-6e38-4008-b869-3847c740b247&quot;, element=&quot;ea729d78-1caf-4d85-88b9-ac9cad1373fb&quot;)&gt;&gt;)
+<font color="#EF2929"><b>================================ 2 failed, 1 passed in 49.85 seconds =================================</b></font></pre>
